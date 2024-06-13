@@ -10,7 +10,7 @@ type ChatMessages = {
 }
 export default function Home() {
   const [startRecording, setStartRecording] = useState(false)
-  const [timer, setTimer] = useState<string>('0:00')
+  const [timer, setTimer] = useState('0:00')
   const [intervalId, setIntervalId] = useState<null | NodeJS.Timeout>()
   const [chats,setChats]=useState<null| ChatMessages[] >(null)
   function recordingStart() {
@@ -70,7 +70,7 @@ export default function Home() {
         <form className="h-[10%] flex" onSubmit={handleSubmit}>
           <div className=" w-[80%] m-auto gap-2 flex rounded-md border p-[0.5rem]">
             {!startRecording && <button><MdOutlineAttachFile className="text-xl" /></button>}
-            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording In Progress</p>: <input placeholder="Enter Prompt" className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
+            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
             <div className="flex gap-4">
               {!startRecording && <button type="submit"><IoSend className="text-xl" /></button> }
               <button type="button">
