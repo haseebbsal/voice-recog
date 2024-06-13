@@ -70,7 +70,7 @@ const users = [
 const statusColorMap = {
     active: "success",
     paused: "danger",
-    vacation: "warning",
+    medium: "warning",
 };
 
 export default function App() {
