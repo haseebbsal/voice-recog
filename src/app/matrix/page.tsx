@@ -48,7 +48,7 @@ const users = [
         name: "Fourth Task",
         priority: "medium",
         team: "Marketing",
-        status: "vacation",
+        status: "medium",
         age: "28",
         avatar: "https://i.pravatar.cc/150?u=a048581f4e29026701d",
         email: "william.howard@example.com",
