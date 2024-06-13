@@ -22,7 +22,7 @@ export default function RootLayout({
         <NextUiProvider>
           <div className="flex min-h-[100vh]">
             <SideBar />
-            <div className="w-full">
+            <div className="w-[75%]">
               {children}
             </div>
           </div>

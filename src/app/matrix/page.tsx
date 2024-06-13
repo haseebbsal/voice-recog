@@ -76,7 +76,6 @@ const statusColorMap = {
 export default function App() {
     const renderCell = useCallback((user:any, columnKey:any) => {
         const cellValue = user[columnKey];
-        console.log(columnKey)
         switch (columnKey) {
             case "name":
                 return (
@@ -123,7 +122,7 @@ export default function App() {
 
     return (
         <div className="flex justify-center items-center h-full">
-            <Table className="w-[70%]" aria-label="Example table with custom cells">
+            <Table className="sm:w-[70%] w-[50%]" aria-label="Example table with custom cells">
                 <TableHeader columns={columns}>
                     {(column) => (
                         <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
