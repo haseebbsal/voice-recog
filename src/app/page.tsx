@@ -59,10 +59,10 @@ export default function Home() {
   }
   return (
     <>
-      <div className="flex-col flex w-[60%] sm:justify-between m-auto h-full px-8">
+      <div className="flex-col flex w-auto sm:w-[60%] sm:justify-between sm:m-auto h-full px-4 sm:px-8">
         <div className={`sm:h-[80%] h-[65%] overflow-auto flex flex-col gap-2 ${chats ? 'p-4' :'justify-center items-center'}`}>
           {chats ?
-            chats.map((e: ChatMessages,index:number) => <div key={index} className="p-4 gap-4 flex bg-gray-700 rounded-lg">
+            chats.map((e: ChatMessages, index: number) => <div key={index} className="p-4 break-all gap-4 flex flex-wrap bg-gray-700 rounded-lg">
               <FaRegCircleUser className="text-2xl"/>
               <p>{e.message}</p>
             </div>)
@@ -74,7 +74,7 @@ export default function Home() {
           }
         </div>
         <form className="h-[20%] flex" onSubmit={handleSubmit}>
-          <div className=" w-auto sm:w-full m-auto gap-2 flex rounded-md border p-[0.5rem]">
+          <div className=" w-full m-auto gap-2 flex rounded-md border p-[0.5rem]">
             {!startRecording &&
               <div className="relative">
                 {showFileOptions && <div className="absolute rounded top-[-7rem] bg-gray-700 p-4 flex flex-col gap-2">
