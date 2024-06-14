@@ -18,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-900 text-white`}>
+      <body className={`${inter.className} bg-gray-900 text-white overflow-hidden`}>
         <NextUiProvider>
-          <div className="flex min-h-[100vh]">
+          <div className="flex flex-col h-[100vh]">
             <SideBar />
-            <div className="w-[75%]">
+            <div className="w-full h-[80%]">
               {children}
             </div>
           </div>
