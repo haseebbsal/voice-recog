@@ -73,7 +73,7 @@ export default function Home() {
             </div>
           }
         </div>
-        <form className="h-full sm:h-[20%] flex" onSubmit={handleSubmit}>
+        <form className="h-[70%] sm:h-[20%] flex" onSubmit={handleSubmit}>
           <div className=" w-auto sm:w-full m-auto gap-2 flex rounded-md border p-[0.5rem]">
             {!startRecording &&
               <div className="relative">
