@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <>
       <div className="flex-col flex w-[60%] sm:justify-between m-auto h-full px-8">
-        <div className={`h-[80%] overflow-auto flex flex-col gap-2 ${chats ? 'p-4' :'justify-center items-center'}`}>
+        <div className={`sm:h-[80%] h-[50%] overflow-auto flex flex-col gap-2 ${chats ? 'p-4' :'justify-center items-center'}`}>
           {chats ?
             chats.map((e: ChatMessages,index:number) => <div key={index} className="p-4 gap-4 flex bg-gray-700 rounded-lg">
               <FaRegCircleUser className="text-2xl"/>
