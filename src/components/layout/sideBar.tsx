@@ -20,9 +20,12 @@ export default function SideBar() {
                         <SiConstruct3 className="text-5xl text-white" />
                         <div className={`flex flex-col  h-full  gap-4`}>
                             <div>
-                                <Link className={`${pathname == '/matrix' ? 'text-blue-400' : 'text-white'}`} href={'/matrix'}>Matrix</Link>
+                                <Link className={`${pathname == '/' ? 'text-blue-400' : 'text-white'}`} href={'/'}>Home</Link>
                             </div>
                             <div>
+                                <Link className={`${pathname == '/matrix' ? 'text-blue-400' : 'text-white'}`} href={'/matrix'}>Matrix</Link>
+                            </div>
+                            {/* <div>
                                 <Link className={`${pathname == '/calendar' ? 'text-blue-400' : 'text-white'}`} href={'/calendar'}>Calendar</Link>
                             </div>
                             <div>
@@ -33,7 +36,7 @@ export default function SideBar() {
                             </div>
                             <div>
                                 <Link className={`${pathname == '/user-profile' ? 'text-blue-400' : 'text-white'}`} href={'/user-profile'}>User Profile</Link>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -1,20 +1,61 @@
 'use client';
 import { IoSend } from "react-icons/io5";
 import { FormEvent, useEffect, useState } from "react";
-import { FaMicrophone } from "react-icons/fa";
+import { FaBloggerB, FaMicrophone } from "react-icons/fa";
 import { FaMicrophoneAltSlash } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { MdOutlineAttachFile } from "react-icons/md";
-import { SiConstruct3 } from "react-icons/si";
+import { RiRobot2Fill } from "react-icons/ri";
+import { useMutation } from "react-query";
+import axiosInstance from "@/utils/axiosInstance";
+import { WavRecorder } from "webm-to-wav-converter";
+import Image from "next/image";
 type ChatMessages = {
-  message:string
+  image?:string,
+  message?: string,
+  id: number,
+  audio?: string,
+}
+
+type LLM_Data = {
+  task_name: string,
+  priority:string[]
 }
 export default function Home() {
   const [startRecording, setStartRecording] = useState(false)
   const [showFileOptions,setShowFileOptions]=useState(false)
   const [timer, setTimer] = useState('0:00')
-  const [intervalId, setIntervalId] = useState<null | NodeJS.Timeout>()
-  const [chats,setChats]=useState<null| ChatMessages[] >(null)
+  const [recorder, setRecorder] = useState(new WavRecorder())
+  const [chats, setChats] = useState<null | ChatMessages[]>(null)
+  const [audio, setAudio] = useState<null | Blob>(null)
+  const [imageBase64, setImageBase64] = useState<string | null>(null)
+  const [image, setImage] = useState<any>()
+  const [pdf, setPDF] = useState<any>()
+  const [intervaID,setIntervalID]=useState<NodeJS.Timeout|null>(null)
+  const formSubmitMutation = useMutation((data:FormData) => axiosInstance.postForm('/prompt', data), {
+    onSuccess(data) {
+      setChats((chats) => {
+        // console.log(data.data)
+        // const { data:llmData, id } = data.data
+        // console.log(llmData, id)
+        let message='Tasks Allocated To Matrix'
+        // llmData.forEach((e:LLM_Data) => {
+        //   message += `${e.task_name} : ${e.priority.join(' and ') }.   `
+        // })
+        if (chats) {
+          return [...chats, { message, id:1 }]
+        }
+        else {
+          return [{ message, id:1}]
+        }
+      })
+      setImageBase64(null)
+      setAudio(null)
+      setImage(null)
+      setPDF(null)
+        // console.log(data.data)
+    },
+  })
   function recordingStart() {
     setStartRecording(true)
     setShowFileOptions(false)
@@ -33,39 +74,82 @@ export default function Home() {
         }
       })
     }, 1000)
-    setIntervalId(interval)
-  }
-  function stopRecording() {
+    setIntervalID(interval)
+    recorder.start();
+    } 
+  // console.log(recorder)
+  async function stopRecord() {
     setStartRecording(false)
-    clearInterval(intervalId!)
-    setIntervalId(null)
     setTimer('0:00')
+    clearInterval(intervaID!)
+    recorder.stop();
+    setTimeout(async () => {
+      const blob = await recorder.getBlob(true);
+      setAudio(blob!)
+      // console.log(blob)
+    },0)
   }
 
-  function handleSubmit(e:FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const form = e.target as HTMLFormElement
-    const message = (form[1] as HTMLInputElement).value
+    const formData = new FormData(form)
+    if (audio) {
+      formData.set('audio',audio,'random12.wav')
+    }
+    if (image) {
+      formData.set('image',image)
+    }
+    if (pdf) {
+      formData.set('pdf', pdf)
+    }
+    console.log([...formData.entries()])
+    formSubmitMutation.mutate(formData)
+    const message = formData.get('prompt')
+
     if (message) {
       setChats((chat) => {
         if (chat) {
-          return [...chat, { message }]
+          return [...chat, { message:message as string,id:0,image:imageBase64 } as ChatMessages]
         }
-        return [{ message }]
+        return [{ message: message as string, id: 0, image: imageBase64 } as ChatMessages]
       })
-      form.reset()
     }
-
+    form.reset()
   }
   return (
     <>
-      <div className="flex-col flex w-auto sm:w-[60%] sm:justify-between sm:m-auto h-full px-4 sm:px-8">
+      <div className="flex-col flex w-auto sm:w-[60%] sm:justify-between sm:m-auto h-[90vh] px-4 sm:px-8">
         <div className={`sm:h-[80%] h-[65%] overflow-auto flex flex-col gap-2 ${chats ? 'p-4' :'justify-center items-center'}`}>
           {chats ?
-            chats.map((e: ChatMessages, index: number) => <div key={index} className="p-4 break-all gap-4 flex flex-wrap bg-gray-700 rounded-lg">
-              <FaRegCircleUser className="text-2xl"/>
-              <p>{e.message}</p>
-            </div>)
+            chats.map((e: ChatMessages, index: number) => {
+              if (e.id) {
+                return (
+                  <div key={index} className="p-4 break-all gap-4 flex flex-col items-end flex-wrap bg-gray-700 rounded-lg">
+                      <RiRobot2Fill className="text-2xl" />
+                      <p>{e.message}</p>
+                    </div>
+                )
+              }
+              if (e.image) {
+                return (
+                  <div key={index} className="p-4 break-all gap-4 flex flex-wrap bg-gray-700 rounded-lg">
+                    <FaRegCircleUser className="text-2xl" />
+                    <div className="w-full h-[10rem]">
+                      <Image src={e.image} alt="user image" className="object-contain w-full h-full" width={100} height={100}/>
+                    </div>
+                    <p>{e.message}</p>
+                  </div>
+                )
+              }
+              return (
+                <div key={index} className="p-4 break-all gap-4 flex flex-col flex-wrap bg-gray-700 rounded-lg">
+                  <FaRegCircleUser className="text-2xl" />
+                  <p>{e.message}</p>
+                </div>
+              )
+            }
+            )
             :
             <div className="flex flex-col items-center gap-4">
               {/* <SiConstruct3 className="text-5xl text-white" /> */}
@@ -80,22 +164,60 @@ export default function Home() {
                 {showFileOptions && <div className="absolute rounded top-[-7rem] bg-gray-700 p-4 flex flex-col gap-2">
                   <div className="relative">
                     <label className="cursor-pointer" htmlFor="image">Image</label>
-                    <input className="absolute w-full h-full invisible top-0 left-0 " type="file" name="image" id="image" />
+                    <input className="absolute w-full h-full invisible top-0 left-0 " onChange={(e) => {
+                      const file = e.target.files![0]
+                      const formData=new FormData()
+                      // setImage(file)
+                      formData.set('image',file)
+                      formSubmitMutation.mutate(formData)
+                      // setChats((chat) => {
+                      //   if (chat) {
+                      //     return [...chat, { image: imageBase64 } as ChatMessages]
+                      //   }
+                      //   return [{ image: imageBase64 } as ChatMessages]
+                      // })
+                      const fileReader = new FileReader()
+                      fileReader.onload = (event) => {
+                        setChats((chat) => {
+                          if (chat) {
+                            return [...chat, { image: fileReader.result } as ChatMessages]
+                          }
+                          return [{ image: fileReader.result } as ChatMessages]
+                        })
+                        // setImageBase64(fileReader.result as string)
+                      }
+                      fileReader.readAsDataURL(file)
+                      
+                    }} type="file" name="image" id="image" />
                   </div>
                   <div className="relative">
-                    <label className="cursor-pointer" htmlFor="pdf">PDF</label>
-                    <input className="absolute w-full h-full invisible top-0 left-0 " type="file" name="pdf" id="pdf" />
+                    <label className="cursor-pointer" htmlFor="pdf">Document</label>
+                    <input className="absolute w-full h-full invisible top-0 left-0 " type="file" name="pdf" id="pdf" onChange={(e) => {
+                      const file = e.target.files![0]
+                      // const file = e.target.files![0]
+                      const formData = new FormData()
+                      // setImage(file)
+                      formData.set('pdf', file)
+                      formSubmitMutation.mutate(formData)
+                      setChats((chat) => {
+                        if (chat) {
+                          return [...chat, { message:'Read This Document' } as ChatMessages]
+                        }
+                        return [{ message:'Read This Document' } as ChatMessages]
+                      })
+                      // setPDF(file)
+                    }} />
                   </div>
                 </div>}
-                <button><MdOutlineAttachFile onClick={()=>{setShowFileOptions(!showFileOptions)}} className="text-xl" /></button>
+                <button type="button"><MdOutlineAttachFile onClick={()=>{setShowFileOptions(!showFileOptions)}} className="text-xl" /></button>
               </div>
             }
-            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
+            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" required className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
             <div className="flex gap-4">
               {!startRecording &&<button type="submit"><IoSend className="text-xl" /></button>}
-              <button type="button">
-                {startRecording ? <FaMicrophoneAltSlash className="text-xl"  onClick={stopRecording} /> : <FaMicrophone className="text-xl" onClick={recordingStart}/>}
-              </button>
+              {/* <button type="button">
+                {startRecording ? <FaMicrophoneAltSlash className="text-xl" id='stop' onClick={stopRecord}  /> : <FaMicrophone className="text-xl" onClick={recordingStart}/>}
+              </button> */}
               {startRecording && <p>{ timer}</p>}
             </div>
           </div>
