@@ -8,8 +8,8 @@ import QueryProvider from "@/providers/QueryProvier";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Voice Recognition",
-  description: " App For Voice Recognition",
+  title: "plotXY2Z",
+  description: " App For Task Categorization",
 };
 
 export default function RootLayout({
