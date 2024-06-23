@@ -13,7 +13,7 @@ export default function SideBar() {
             <div className={`flex  w-full h-[20%] justify-between gap-4 items-center px-[2rem] pt-4 `}>
                 <GiHamburgerMenu onClick={() => setToggleNavbar(!toggleNavbar)} className="text-2xl block cursor-pointer" />
                 <div className="w-full flex justify-center">
-                    <Link className="flex gap-2 w-min items-center" href={'/'}><SiConstruct3 className="text-5xl text-white" /><p className="text-2xl">Taskade</p></Link>
+                    <Link className="flex gap-2 w-min items-center" href={'/'}><SiConstruct3 className="text-5xl text-white" /><p className="text-2xl">plotXY2Z</p></Link>
                 </div>
                 <div onClick={() => setToggleNavbar(!toggleNavbar)} className={`${toggleNavbar ? 'block' : 'hidden'} absolute left-0 top-0 bg-[#181717cc] z-[333] h-full w-full `}>
                     <div className="flex flex-col w-1/2 bg-[#030320] px-8 pt-8 h-full gap-4">
