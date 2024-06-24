@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL:'http://127.0.0.1:3024'
+    baseURL:'https://www.plotxxy2z.com'
 })
 // http://54.175.91.94
 export default axiosInstance
