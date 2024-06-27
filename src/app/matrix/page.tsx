@@ -204,26 +204,29 @@ export default function App() {
                                         }}
                                         onTouchStart={() => {
                                             setMobileDragID((prev) => {
-                                                if (prev?.table != 'first') {
-                                                    if (prev?.table == 'third') {
-                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                if (prev) {
+                                                    if (prev?.table != 'first') {
+                                                        if (prev?.table == 'third') {
+                                                            setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'fourth') {
+                                                            setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'second') {
+                                                            setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'main') {
+                                                            setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                        setFirstTable([...firstTable, item!])
+                                                        // console.log(prev)
+                                                        // console.log(item)
+                                                        return null
+                                                        // console.log(mobileDragId)
                                                     }
-                                                    if (prev?.table == 'fourth') {
-                                                        setfourthTable(fourthTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'second') {
-                                                        setSecondTable(SecondTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'main') {
-                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
-                                                    setFirstTable([...firstTable, item!])
-                                                    // console.log(prev)
-                                                    // console.log(item)
-                                                    return null
-                                                    // console.log(mobileDragId)
                                                 }
+                                                
                                                 return prev
                                             })
                                             // console.log('no here', mobileDragId)
@@ -280,26 +283,29 @@ export default function App() {
                                         }}
                                         onTouchStart={() => {
                                             setMobileDragID((prev) => {
-                                                if (prev?.table != 'second') {
-                                                    if (prev?.table == 'third') {
-                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                if (prev) {
+                                                    if (prev?.table != 'second') {
+                                                        if (prev?.table == 'third') {
+                                                            setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'fourth') {
+                                                            setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'first') {
+                                                            setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'main') {
+                                                            setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                        setSecondTable([...SecondTable, item!])
+                                                        // console.log(prev)
+                                                        // console.log(item)
+                                                        return null
+                                                        // console.log(mobileDragId)
                                                     }
-                                                    if (prev?.table == 'fourth') {
-                                                        setfourthTable(fourthTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'first') {
-                                                        setFirstTable(firstTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'main') {
-                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
-                                                    setSecondTable([...SecondTable, item!])
-                                                    // console.log(prev)
-                                                    // console.log(item)
-                                                    return null
-                                                    // console.log(mobileDragId)
                                                 }
+                                                
                                                 return prev
                                             })
                                             // console.log('no here', mobileDragId)
@@ -353,26 +359,29 @@ export default function App() {
                                     }
                                 }} onTouchStart={() => {
                                     setMobileDragID((prev) => {
-                                        if (prev?.table != 'third') {
-                                            if (prev?.table == 'second') {
-                                                setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                        if (prev) {
+                                            if (prev?.table != 'third') {
+                                                if (prev?.table == 'second') {
+                                                    setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                }
+                                                if (prev?.table == 'fourth') {
+                                                    setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                                }
+                                                if (prev?.table == 'first') {
+                                                    setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                                }
+                                                if (prev?.table == 'main') {
+                                                    setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                }
+                                                const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                setthirdTable([...thirdTable, item!])
+                                                // console.log(prev)
+                                                // console.log(item)
+                                                return null
+                                                // console.log(mobileDragId)
                                             }
-                                            if (prev?.table == 'fourth') {
-                                                setfourthTable(fourthTable.filter((e) => e._id != prev.id))
-                                            }
-                                            if (prev?.table == 'first') {
-                                                setFirstTable(firstTable.filter((e) => e._id != prev.id))
-                                            }
-                                            if (prev?.table == 'main') {
-                                                setmainTable(mainTable.filter((e) => e._id != prev.id))
-                                            }
-                                            const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
-                                            setthirdTable([...thirdTable, item!])
-                                            // console.log(prev)
-                                            // console.log(item)
-                                            return null
-                                            // console.log(mobileDragId)
                                         }
+                                        
                                         return prev
                                     })
                                     // console.log('no here', mobileDragId)
@@ -435,26 +444,29 @@ export default function App() {
                                         }}
                                         onTouchStart={() => {
                                             setMobileDragID((prev) => {
-                                                if (prev?.table != 'fourth') {
-                                                    if (prev?.table == 'second') {
-                                                        setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                if (prev) {
+                                                    if (prev?.table != 'fourth') {
+                                                        if (prev?.table == 'second') {
+                                                            setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'third') {
+                                                            setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'first') {
+                                                            setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        if (prev?.table == 'main') {
+                                                            setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                        }
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                        setfourthTable([...fourthTable, item!])
+                                                        // console.log(prev)
+                                                        // console.log(item)
+                                                        return null
+                                                        // console.log(mobileDragId)
                                                     }
-                                                    if (prev?.table == 'third') {
-                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'first') {
-                                                        setFirstTable(firstTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    if (prev?.table == 'main') {
-                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
-                                                    }
-                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
-                                                    setfourthTable([...fourthTable, item!])
-                                                    // console.log(prev)
-                                                    // console.log(item)
-                                                    return null
-                                                    // console.log(mobileDragId)
                                                 }
+                                                
                                                 return prev
                                             })
                                             // console.log('no here', mobileDragId)
@@ -506,26 +518,30 @@ export default function App() {
                                 }
                             }} onTouchStart={() => {
                                 setMobileDragID((prev) => {
-                                    if (prev?.table != 'main') {
-                                        if (prev?.table == 'second') {
-                                            setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                    if (prev) {
+                                        if (prev?.table != 'main') {
+
+                                            if (prev?.table == 'second') {
+                                                setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'third') {
+                                                setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'first') {
+                                                setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'fourth') {
+                                                setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                            }
+                                            const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                            console.log(prev)
+                                            console.log(item)
+                                            return null
+                                            // setmainTable([...mainTable, item!])
+                                            // console.log(mobileDragId)
                                         }
-                                        if (prev?.table == 'third') {
-                                            setthirdTable(thirdTable.filter((e) => e._id != prev.id))
-                                        }
-                                        if (prev?.table == 'first') {
-                                            setFirstTable(firstTable.filter((e) => e._id != prev.id))
-                                        }
-                                        if (prev?.table == 'fourth') {
-                                            setfourthTable(fourthTable.filter((e) => e._id != prev.id))
-                                        }
-                                        const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
-                                        console.log(prev)
-                                        console.log(item)
-                                        return null
-                                        // setmainTable([...mainTable, item!])
-                                        // console.log(mobileDragId)
                                     }
+                                    
                                     return prev
                                 })
                                 // console.log('no here', mobileDragId)
