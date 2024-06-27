@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-900 pb-8 text-white `}>
+      <body className={`${inter.className} bg-gray-900  text-white `}>
         <NextUiProvider>
           <QueryProvider>
             <div className="flex flex-col min-h-[100vh]">

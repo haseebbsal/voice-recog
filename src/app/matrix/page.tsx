@@ -84,7 +84,7 @@ type taskData = {
 }
 type DragID = {
     id: string,
-    table:'first'|'second'|'third'|'fourth'|'main'
+    table?:'first'|'second'|'third'|'fourth'|'main'
 }
 
 export default function App() {
@@ -118,7 +118,7 @@ export default function App() {
         },
         refetchOnWindowFocus:false
     })
-    console.log(mainTable)
+    // console.log(mainTable)
     // const [mainTable, setMainTable] = useState(getTasksQuery.data)
 
     // const renderCell = useCallback((user:any, columnKey:any) => {
@@ -169,21 +169,166 @@ export default function App() {
 
     return (
         <>
-            <div className="flex  gap-16 pt-16 px-4 flex-wrap sm:flex-nowrap justify-center items-center">
-                <div className="flex w-full sm:w-[30%] flex-col gap-4">
-                    <div className="flex gap-4">
-                        <p className="text-center" style={{ writingMode:'vertical-rl',rotate:'180deg'}}>Important</p>
-                        <div className="flex flex-col w-full gap-2 items-center">
-                            <p>Urgent</p>
-                            <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
+            <div className="mb-8">
+                <div className="flex  gap-16 pt-16 px-4 flex-wrap sm:flex-nowrap justify-center items-center">
+                    <div className="flex w-full sm:w-[30%] flex-col gap-4">
+                        <div className="flex gap-4">
+                            <p className="text-center" style={{ writingMode: 'vertical-rl', rotate: '180deg' }}>Important</p>
+                            <div className="flex flex-col w-full gap-2 items-center">
+                                <p>Urgent</p>
+                                <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
+                                    <p className="bg-gray-200 p-2 rounded-md">Name</p>
+                                    <div onDrop={(j) => {
+                                        if (dragId?.table != 'first') {
+                                            if (dragId?.table == 'second') {
+                                                setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'third') {
+                                                setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'fourth') {
+                                                setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'main') {
+                                                setmainTable(mainTable.filter((e) => e._id != dragId.id))
+                                            }
+
+                                            const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                            // setMainTable([...mainTable, item!])
+                                            setFirstTable([...firstTable, item!])
+                                            console.log(dragId)
+                                        }
+                                    }} onDragOver={(j) => {
+                                        j.preventDefault()
+                                    }} id="first" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        {
+                                            firstTable.map((e) => <div draggable onDrag={(j: any) => {
+                                                setDragId({ id: e._id, table: 'first' })
+                                                j.target.style.cursor = 'grabbing'
+                                            }} onDragEnd={(j: any) => {
+                                                j.target.style.cursor = 'grab'
+                                                }}
+                                                onTouchStart={() => {
+                                                    setDragId({ id: e._id })
+                                                    console.log('setting', e._id)
+                                                }}
+
+                                                onTouchEnd={(e) => {
+                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                                                    const id = targetElement!.id
+                                                    console.log('id', id)
+                                                    if (id) {
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                        if (id == 'second') {
+                                                            setSecondTable([...SecondTable, item!])
+                                                        }
+                                                        if (id == 'third') {
+                                                            setthirdTable([...thirdTable, item!])
+                                                        }
+                                                        if (id == 'main') {
+                                                            setmainTable([...mainTable, item!])
+                                                        }
+                                                        if (id == 'fourth') {
+                                                            setfourthTable([...fourthTable, item])
+                                                        }
+                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                        setFirstTable(() => firstTable.filter((e) => e._id != dragId?.id))
+                                                    }
+
+                                                    console.log(targetElement)
+                                                    console.log('main end')
+                                                }}
+                                                className="cursor-grab" key={e._id}>
+                                                {e.task_name}
+                                            </div>)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col w-full gap-2 items-center">
+                                <p>Not Urgent</p>
+                                <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
+                                    <p className="bg-gray-200 p-2 rounded-md">Name</p>
+                                    <div onDrop={(j) => {
+                                        if (dragId?.table != 'second') {
+                                            if (dragId?.table == 'first') {
+                                                setFirstTable(firstTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'third') {
+                                                setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'fourth') {
+                                                setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'main') {
+                                                setmainTable(mainTable.filter((e) => e._id != dragId.id))
+                                            }
+
+
+                                            const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                            // setMainTable([...mainTable, item!])
+                                            setSecondTable([...SecondTable, item!])
+                                            console.log(dragId)
+                                        }
+                                    }} onDragOver={(j) => {
+                                        j.preventDefault()
+                                    }} id="second" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        {
+                                            SecondTable.map((e) => <div draggable onDrag={(j: any) => {
+                                                setDragId({ id: e._id, table: 'second' })
+                                                j.target.style.cursor = 'grabbing'
+                                            }} onDragEnd={(j: any) => {
+                                                j.target.style.cursor = 'grab'
+                                                }}
+                                                onTouchStart={() => {
+                                                    setDragId({ id: e._id })
+                                                    console.log('setting', e._id)
+                                                }}
+
+                                                onTouchEnd={(e) => {
+                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                                                    const id = targetElement!.id
+                                                    console.log('id', id)
+                                                    if (id) {
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                        if (id == 'main') {
+                                                            setmainTable([...mainTable, item!])
+                                                        }
+                                                        if (id == 'third') {
+                                                            setthirdTable([...thirdTable, item!])
+                                                        }
+                                                        if (id == 'first') {
+                                                            setFirstTable([...firstTable, item!])
+                                                        }
+                                                        if (id == 'fourth') {
+                                                            setfourthTable([...fourthTable, item])
+                                                        }
+                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                        setSecondTable(() => SecondTable.filter((e) => e._id != dragId?.id))
+                                                    }
+
+                                                    console.log(targetElement)
+                                                    console.log('main end')
+                                                }}
+                                                className="cursor-grab" key={e._id}>
+                                                {e.task_name}
+                                            </div>)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <p className="text-center" style={{ writingMode: 'vertical-rl', rotate: '180deg' }}>Not Important</p>
+                            <div className="w-full"><div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
                                 <p className="bg-gray-200 p-2 rounded-md">Name</p>
                                 <div onDrop={(j) => {
-                                    if (dragId?.table != 'first') {
+                                    if (dragId?.table != 'third') {
                                         if (dragId?.table == 'second') {
                                             setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
                                         }
-                                        if (dragId?.table == 'third') {
-                                            setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
+                                        if (dragId?.table == 'first') {
+                                            setFirstTable(firstTable.filter((e) => e._id != dragId.id))
                                         }
                                         if (dragId?.table == 'fourth') {
                                             setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
@@ -194,75 +339,147 @@ export default function App() {
 
                                         const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
                                         // setMainTable([...mainTable, item!])
-                                        setFirstTable([...firstTable, item!])
+                                        setthirdTable([...thirdTable, item!])
                                         console.log(dragId)
                                     }
                                 }} onDragOver={(j) => {
                                     j.preventDefault()
-                                }} className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                }} id="third" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
                                     {
-                                        firstTable.map((e) => <div draggable onDrag={(j: any) => {
-                                            setDragId({id:e._id,table:'first'})
+                                        thirdTable.map((e) => <div draggable onDrag={(j: any) => {
+                                            setDragId({ id: e._id, table: 'third' })
                                             j.target.style.cursor = 'grabbing'
                                         }} onDragEnd={(j: any) => {
                                             j.target.style.cursor = 'grab'
-                                        }} className="cursor-grab"  key={e._id}>
+                                            }}
+                                            onTouchStart={() => {
+                                                setDragId({ id: e._id })
+                                                console.log('setting', e._id)
+                                            }}
+
+                                            onTouchEnd={(e) => {
+                                                let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                                                const id = targetElement!.id
+                                                console.log('id', id)
+                                                if (id) {
+                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                    if (id == 'second') {
+                                                        setSecondTable([...SecondTable, item!])
+                                                    }
+                                                    if (id == 'main') {
+                                                        setmainTable([...mainTable, item!])
+                                                    }
+                                                    if (id == 'first') {
+                                                        setFirstTable([...firstTable, item!])
+                                                    }
+                                                    if (id == 'fourth') {
+                                                        setfourthTable([...fourthTable, item])
+                                                    }
+                                                    // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                    setthirdTable(() => thirdTable.filter((e) => e._id != dragId?.id))
+                                                }
+
+                                                console.log(targetElement)
+                                                console.log('main end')
+                                            }}
+                                            className="cursor-grab" key={e._id}>
                                             {e.task_name}
                                         </div>)
                                     }
                                 </div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col w-full gap-2 items-center">
-                            <p>Not Urgent</p>
-                            <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
-                                <p className="bg-gray-200 p-2 rounded-md">Name</p>
-                                <div onDrop={(j) => {
-                                    if (dragId?.table != 'second') {
-                                        if (dragId?.table == 'first') {
-                                            setFirstTable(firstTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'third') {
-                                            setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'fourth') {
-                                            setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'main') {
-                                            setmainTable(mainTable.filter((e) => e._id != dragId.id))
-                                        }
+                            </div></div>
+                            <div className="w-full">
+                                <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
+                                    <p className="bg-gray-200 p-2 rounded-md">Name</p>
+                                    <div onDrop={(j) => {
+                                        if (dragId?.table != 'fourth') {
+                                            if (dragId?.table == 'second') {
+                                                setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'third') {
+                                                setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'first') {
+                                                setFirstTable(firstTable.filter((e) => e._id != dragId.id))
+                                            }
+                                            if (dragId?.table == 'main') {
+                                                setmainTable(mainTable.filter((e) => e._id != dragId.id))
+                                            }
 
 
-                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                        // setMainTable([...mainTable, item!])
-                                        setSecondTable([...SecondTable, item!])
-                                        console.log(dragId)
-                                    }
-                                }} onDragOver={(j) => {
-                                    j.preventDefault()
-                                }} className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
-                                    {
-                                        SecondTable.map((e) => <div draggable onDrag={(j: any) => {
-                                            setDragId({ id: e._id, table: 'second' })
-                                            j.target.style.cursor = 'grabbing'
-                                        }} onDragEnd={(j: any) => {
-                                            j.target.style.cursor = 'grab'
-                                        }} className="cursor-grab" key={e._id}>
-                                            {e.task_name}
-                                        </div>)
-                                    }
+                                            const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                            // setMainTable([...mainTable, item!])
+                                            setfourthTable([...fourthTable, item!])
+                                            console.log(dragId)
+                                        }
+                                    }} onDragOver={(j) => {
+                                        j.preventDefault()
+                                        }} onPointerMove={() => {
+                                            console.log('pointer')
+                                        }} onMouseEnter={() => {
+                                            console.log('enter')
+                                        }} onTouchMove={(e) => {
+                                            // console.log(e)
+                                        console.log('end')
+                                    }} id="fourth" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        {
+                                            fourthTable.map((e) => <div draggable onDrag={(j: any) => {
+                                                setDragId({ id: e._id, table: 'fourth' })
+                                                j.target.style.cursor = 'grabbing'
+                                            }} onDragEnd={(j: any) => {
+                                                j.target.style.cursor = 'grab'
+                                                }}
+                                                onTouchStart={() => {
+                                                    setDragId({ id: e._id })
+                                                    console.log('setting', e._id)
+                                                }}
+
+                                                onTouchEnd={(e) => {
+                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                                                    const id = targetElement!.id
+                                                    console.log('id', id)
+                                                    if (id) {
+                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                        if (id == 'second') {
+                                                            setSecondTable([...SecondTable,item!])
+                                                        }
+                                                        if (id == 'third') {
+                                                            setthirdTable([...thirdTable,item!])
+                                                        }
+                                                        if (id == 'first') {
+                                                            setFirstTable([...firstTable,item!])
+                                                        }
+                                                        if (id == 'main') {
+                                                            setmainTable([...mainTable,item!])
+                                                            // setfourthTable([...fourthTable, item])
+                                                        }
+                                                        setfourthTable(() => fourthTable.filter((e) => e._id != dragId?.id))
+                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                    }
+
+                                                    console.log(targetElement)
+                                                    console.log('main end')
+                                                }}
+                                                className="cursor-grab" key={e._id}>
+                                                {e.task_name}
+                                            </div>)
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-4">
-                        <p className="text-center" style={{ writingMode: 'vertical-rl', rotate: '180deg' }}>Not Important</p>
-                        <div className="w-full"><div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
+                    <div className="flex w-full sm:w-[60%] justify-center items-center h-full">
+                        <div  className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
                             <p className="bg-gray-200 p-2 rounded-md">Name</p>
                             <div onDrop={(j) => {
-                                if (dragId?.table != 'third') {
+                                // console.log(e)
+                                if (dragId?.table != 'main') {
                                     if (dragId?.table == 'second') {
                                         setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
+                                    }
+                                    if (dragId?.table == 'third') {
+                                        setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
                                     }
                                     if (dragId?.table == 'first') {
                                         setFirstTable(firstTable.filter((e) => e._id != dragId.id))
@@ -270,161 +487,108 @@ export default function App() {
                                     if (dragId?.table == 'fourth') {
                                         setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
                                     }
-                                    if (dragId?.table == 'main') {
-                                        setmainTable(mainTable.filter((e) => e._id != dragId.id))
-                                    }
-
                                     const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                    // setMainTable([...mainTable, item!])
-                                    setthirdTable([...thirdTable, item!])
+                                    setmainTable([...mainTable, item!])
                                     console.log(dragId)
                                 }
-                            }} onDragOver={(j) => {
+                            }}  onDragOver={(j) => {
                                 j.preventDefault()
-                            }} className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                }} id="main" className="flex flex-col gap-2 min-h-[9rem] max-h-[9rem] overflow-auto">
+                                {(getTasksQuery.isFetching) && <p>Loading....</p>}
+                                {getTasksQuery.data?.length == 0 && !getTasksQuery.isFetching && <p>Enter Tasks In Prompt To See Tasks Here</p>}
                                 {
-                                    thirdTable.map((e) => <div draggable onDrag={(j: any) => {
-                                        setDragId({ id: e._id, table: 'third' })
+                                    mainTable?.map((e: taskData) => <div draggable   onDrag={(j: any) => {
+                                        setDragId({ id: e._id, table: 'main' })
                                         j.target.style.cursor = 'grabbing'
                                     }} onDragEnd={(j: any) => {
                                         j.target.style.cursor = 'grab'
-                                    }} className="cursor-grab" key={e._id}>
+                                        }}
+
+                                        onTouchStart={() => {
+                                            setDragId({ id: e._id })
+                                            console.log('setting', e._id)
+                                        }}
+                                        
+                                        onTouchEnd={(e) => {
+                                            let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+                                            const id = targetElement!.id
+                                            console.log('id',id)
+                                            if (id) {
+                                                const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                if (id == 'second') {
+                                                    setSecondTable([...SecondTable,item!])
+                                                }
+                                                if (id == 'third') {
+                                                    setthirdTable([...thirdTable,item!])
+                                                }
+                                                if (id == 'first') {
+                                                    setFirstTable([...firstTable,item!])
+                                                }
+                                                if (id == 'fourth') {
+                                                    setfourthTable([...fourthTable,item])
+                                                }
+                                                // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
+                                                setmainTable(()=>mainTable.filter((e)=>e._id!=dragId?.id))
+                                            }
+
+                                            console.log(targetElement)
+                                            console.log('main end')
+                                        }}
+                                        className="cursor-grab" key={e._id}>
                                         {e.task_name}
                                     </div>)
                                 }
                             </div>
-                        </div></div>
-                        <div className="w-full">
-                            <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
-                                <p className="bg-gray-200 p-2 rounded-md">Name</p>
-                                <div onDrop={(j) => {
-                                    if (dragId?.table != 'fourth') {
-                                        if (dragId?.table == 'second') {
-                                            setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'third') {
-                                            setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'first') {
-                                            setFirstTable(firstTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        if (dragId?.table == 'main') {
-                                            setmainTable(mainTable.filter((e) => e._id != dragId.id))
-                                        }
-                                        
-
-                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                        // setMainTable([...mainTable, item!])
-                                        setfourthTable([...fourthTable, item!])
-                                        console.log(dragId)
-                                    }
-                                }} onDragOver={(j) => {
-                                    j.preventDefault()
-                                }} className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
-                                    {
-                                        fourthTable.map((e) => <div draggable onDrag={(j: any) => {
-                                            setDragId({ id: e._id, table: 'fourth' })
-                                            j.target.style.cursor = 'grabbing'
-                                        }} onDragEnd={(j: any) => {
-                                            j.target.style.cursor = 'grab'
-                                        }} className="cursor-grab" key={e._id}>
-                                            {e.task_name}
-                                        </div>)
-                                    }
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="flex w-full sm:w-[60%] justify-center items-center h-full">
-                    <div className="w-full rounded-lg bg-white text-gray-600 p-4 flex flex-col gap-2">
-                        <p className="bg-gray-200 p-2 rounded-md">Name</p>
-                        <div onDrop={(j) => {
-                            // console.log(e)
-                            if (dragId?.table != 'main') {
-                                if (dragId?.table == 'second') {
-                                    setSecondTable(SecondTable.filter((e) => e._id != dragId.id))
-                                }
-                                if (dragId?.table == 'third') {
-                                    setthirdTable(thirdTable.filter((e) => e._id != dragId.id))
-                                }
-                                if (dragId?.table == 'first') {
-                                    setFirstTable(firstTable.filter((e) => e._id != dragId.id))
-                                }
-                                if (dragId?.table == 'fourth') {
-                                    setfourthTable(fourthTable.filter((e) => e._id != dragId.id))
-                                }
-                                const item = getTasksQuery.data.find((e:taskData) => e._id == dragId?.id)
-                                setmainTable([...mainTable, item!])
-                                console.log(dragId)
-                            }
-                        }} onDragOver={(j) => {
-                            j.preventDefault()
-                            }} className="flex flex-col gap-2 min-h-[9rem] max-h-[9rem] overflow-auto">
-                            {(getTasksQuery.isFetching)  && <p>Loading....</p>}
-                            {getTasksQuery.data?.length==0 && !getTasksQuery.isFetching && <p>Enter Tasks In Prompt To See Tasks Here</p> }
-                            {
-                                mainTable?.map((e:taskData) => <div draggable onDrag={(j: any) => {
-                                    setDragId({ id:e._id, table:'main'})
-                                    j.target.style.cursor = 'grabbing'
-                                }} onDragEnd={(j: any) => {
-                                    j.target.style.cursor = 'grab'
-                                    }}
-                                
-                                    className="cursor-grab" key={e._id}>
-                                    {e.task_name}
-                                </div>)
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {getTasksQuery.data && getTasksQuery.data.length != 0 && <div className="mt-16 flex justify-center gap-8">
-                <button onClick={() => {
-                    setFirstTable([])
-                    setSecondTable([])
-                    setthirdTable([])
-                    setfourthTable([])
-                    setmainTable(getTasksQuery.data)
-                }} className="bg-white hover:bg-gray-400 text-gray-900 px-8 py-2 rounded-lg hover:text-white">Clear Matrix Quadrants</button>
-                {!aiSuggest && <button onClick={() => {
-                    const firstTable: taskData[] = []
-                    const secondTable: taskData[] = []
-                    const thirdTable: taskData[] = []
-                    const fourthTable: taskData[] = []
-                    getTasksQuery.data.forEach((e: taskData) => {
-                        if (e.priority[0] == 'Important') {
-                            if (e.priority[1] == 'Urgent') {
-                                firstTable.push(e)
-                            }
-                            else {
-                                secondTable.push(e)
-                            }
-                        }
-                        else {
-                            if (e.priority[1] == 'Urgent') {
-                                thirdTable.push(e)
-                            }
-                            else {
-                                fourthTable.push(e)
-                            }
-                        }
-                    })
-                    console.log(getTasksQuery.data)
-                    setAiSuggested(true)
-                    setFirstTable(firstTable)
-                    setSecondTable(secondTable)
-                    setthirdTable(thirdTable)
-                    setfourthTable(fourthTable)
-                    setmainTable([])
-                }} className="bg-white hover:bg-gray-400 hover:text-white text-gray-900 px-8 py-2 rounded-lg">Get AI Suggestions</button>}
-                {aiSuggest && <div className="flex items-center gap-4">
+                {getTasksQuery.data && getTasksQuery.data.length != 0 && <div className="mt-16 flex justify-center gap-8">
                     <button onClick={() => {
-                        deleteAllTasks.mutate()
-                    }} className="bg-white hover:bg-green-900 hover:text-white p-2 rounded-full text-green-900 text-lg"><FaThumbsUp /></button>
-                    <button  className="bg-white p-2 hover:bg-red-900 hover:text-white rounded-full text-red-900 text-lg"> <FaThumbsDown /></button>
+                        setFirstTable([])
+                        setSecondTable([])
+                        setthirdTable([])
+                        setfourthTable([])
+                        setmainTable(getTasksQuery.data)
+                    }} className="bg-white hover:bg-gray-400 text-gray-900 px-8 py-2 rounded-lg hover:text-white">Clear Matrix Quadrants</button>
+                    {!aiSuggest && <button onClick={() => {
+                        const firstTable: taskData[] = []
+                        const secondTable: taskData[] = []
+                        const thirdTable: taskData[] = []
+                        const fourthTable: taskData[] = []
+                        getTasksQuery.data.forEach((e: taskData) => {
+                            if (e.priority[0] == 'Important') {
+                                if (e.priority[1] == 'Urgent') {
+                                    firstTable.push(e)
+                                }
+                                else {
+                                    secondTable.push(e)
+                                }
+                            }
+                            else {
+                                if (e.priority[1] == 'Urgent') {
+                                    thirdTable.push(e)
+                                }
+                                else {
+                                    fourthTable.push(e)
+                                }
+                            }
+                        })
+                        console.log(getTasksQuery.data)
+                        setAiSuggested(true)
+                        setFirstTable(firstTable)
+                        setSecondTable(secondTable)
+                        setthirdTable(thirdTable)
+                        setfourthTable(fourthTable)
+                        setmainTable([])
+                    }} className="bg-white hover:bg-gray-400 hover:text-white text-gray-900 px-8 py-2 rounded-lg">Get AI Suggestions</button>}
+                    {aiSuggest && <div className="flex items-center gap-4">
+                        <button onClick={() => {
+                            deleteAllTasks.mutate()
+                        }} className="bg-white hover:bg-green-900 hover:text-white p-2 rounded-full text-green-900 text-lg"><FaThumbsUp /></button>
+                        <button className="bg-white p-2 hover:bg-red-900 hover:text-white rounded-full text-red-900 text-lg"> <FaThumbsDown /></button>
+                    </div>}
                 </div>}
-            </div>}
+            </div>
         </>
     );
 }
