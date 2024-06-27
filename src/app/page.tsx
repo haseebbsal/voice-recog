@@ -31,6 +31,7 @@ export default function Home() {
   const [imageBase64, setImageBase64] = useState<string | null>(null)
   const [image, setImage] = useState<any>()
   const [pdf, setPDF] = useState<any>()
+  const [prompt,setPrompt]=useState<null|string>(null)
   const [intervaID,setIntervalID]=useState<NodeJS.Timeout|null>(null)
   const formSubmitMutation = useMutation((data:FormData) => axiosInstance.postForm('/prompt', data), {
     onSuccess(data) {
@@ -53,6 +54,7 @@ export default function Home() {
       setAudio(null)
       setImage(null)
       setPDF(null)
+      setPrompt(null)
         // console.log(data.data)
     },
   })
@@ -93,7 +95,7 @@ export default function Home() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
+    const formData = new FormData()
     if (audio) {
       formData.set('audio',audio,'random12.wav')
     }
@@ -102,6 +104,9 @@ export default function Home() {
     }
     if (pdf) {
       formData.set('pdf', pdf)
+    }
+    if (prompt) {
+      formData.set('prompt',prompt)
     }
     console.log([...formData.entries()])
     formSubmitMutation.mutate(formData)
@@ -212,7 +217,9 @@ export default function Home() {
                 <button type="button"><MdOutlineAttachFile onClick={()=>{setShowFileOptions(!showFileOptions)}} className="text-xl" /></button>
               </div>
             }
-            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" required className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
+            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" onChange={(e)=>{
+              setPrompt(e.target.value)
+            }} required className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
             <div className="flex gap-4">
               {!startRecording &&<button type="submit"><IoSend className="text-xl" /></button>}
               {/* <button type="button">
