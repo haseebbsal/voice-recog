@@ -536,8 +536,8 @@ export default function App() {
                                             const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
                                             console.log(prev)
                                             console.log(item)
+                                            setmainTable([...mainTable, item!])
                                             return null
-                                            // setmainTable([...mainTable, item!])
                                             // console.log(mobileDragId)
                                         }
                                     }
