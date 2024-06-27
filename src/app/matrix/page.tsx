@@ -96,6 +96,7 @@ export default function App() {
     const [fourthTable, setfourthTable] = useState<taskData[]>([])
     const [mainTable, setmainTable] = useState<taskData[]>([])
     const [aiSuggest, setAiSuggested] = useState<boolean>(false)
+    const [mobileDragId,setMobileDragID]=useState<null|DragID>(null)
     const deleteAllTasks = useMutation(() => axiosInstance.post('/deleteTasks'), {
         onSuccess(data) {
             // queryClient.invalidateQueries('data')
@@ -200,7 +201,36 @@ export default function App() {
                                         }
                                     }} onDragOver={(j) => {
                                         j.preventDefault()
-                                    }} id="first" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        }}
+                                        onTouchStart={() => {
+                                            setMobileDragID((prev) => {
+                                                if (prev?.table != 'first') {
+                                                    if (prev?.table == 'third') {
+                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'fourth') {
+                                                        setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'second') {
+                                                        setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'main') {
+                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                    setFirstTable([...firstTable, item!])
+                                                    // console.log(prev)
+                                                    // console.log(item)
+                                                    return null
+                                                    // console.log(mobileDragId)
+                                                }
+                                                return prev
+                                            })
+                                            // console.log('no here', mobileDragId)
+
+                                            // setMobileDragID(null)
+                                        }} 
+                                        id="first" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
                                         {
                                             firstTable.map((e) => <div draggable onDrag={(j: any) => {
                                                 setDragId({ id: e._id, table: 'first' })
@@ -209,34 +239,9 @@ export default function App() {
                                                 j.target.style.cursor = 'grab'
                                                 }}
                                                 onTouchStart={() => {
-                                                    setDragId({ id: e._id })
-                                                    console.log('setting', e._id)
-                                                }}
+                                                    console.log('here')
+                                                    setMobileDragID({ id: e._id, table: 'first' })
 
-                                                onTouchEnd={(e) => {
-                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                                                    const id = targetElement!.id
-                                                    console.log('id', id)
-                                                    if (id) {
-                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                        if (id == 'second') {
-                                                            setSecondTable([...SecondTable, item!])
-                                                        }
-                                                        if (id == 'third') {
-                                                            setthirdTable([...thirdTable, item!])
-                                                        }
-                                                        if (id == 'main') {
-                                                            setmainTable([...mainTable, item!])
-                                                        }
-                                                        if (id == 'fourth') {
-                                                            setfourthTable([...fourthTable, item])
-                                                        }
-                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                        setFirstTable(() => firstTable.filter((e) => e._id != dragId?.id))
-                                                    }
-
-                                                    console.log(targetElement)
-                                                    console.log('main end')
                                                 }}
                                                 className="cursor-grab" key={e._id}>
                                                 {e.task_name}
@@ -272,7 +277,36 @@ export default function App() {
                                         }
                                     }} onDragOver={(j) => {
                                         j.preventDefault()
-                                    }} id="second" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        }}
+                                        onTouchStart={() => {
+                                            setMobileDragID((prev) => {
+                                                if (prev?.table != 'second') {
+                                                    if (prev?.table == 'third') {
+                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'fourth') {
+                                                        setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'first') {
+                                                        setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'main') {
+                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                    setSecondTable([...SecondTable, item!])
+                                                    // console.log(prev)
+                                                    // console.log(item)
+                                                    return null
+                                                    // console.log(mobileDragId)
+                                                }
+                                                return prev
+                                            })
+                                            // console.log('no here', mobileDragId)
+
+                                            // setMobileDragID(null)
+                                        }} 
+                                        id="second" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
                                         {
                                             SecondTable.map((e) => <div draggable onDrag={(j: any) => {
                                                 setDragId({ id: e._id, table: 'second' })
@@ -281,34 +315,9 @@ export default function App() {
                                                 j.target.style.cursor = 'grab'
                                                 }}
                                                 onTouchStart={() => {
-                                                    setDragId({ id: e._id })
-                                                    console.log('setting', e._id)
-                                                }}
+                                                    console.log('here')
+                                                    setMobileDragID({ id: e._id, table: 'second' })
 
-                                                onTouchEnd={(e) => {
-                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                                                    const id = targetElement!.id
-                                                    console.log('id', id)
-                                                    if (id) {
-                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                        if (id == 'main') {
-                                                            setmainTable([...mainTable, item!])
-                                                        }
-                                                        if (id == 'third') {
-                                                            setthirdTable([...thirdTable, item!])
-                                                        }
-                                                        if (id == 'first') {
-                                                            setFirstTable([...firstTable, item!])
-                                                        }
-                                                        if (id == 'fourth') {
-                                                            setfourthTable([...fourthTable, item])
-                                                        }
-                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                        setSecondTable(() => SecondTable.filter((e) => e._id != dragId?.id))
-                                                    }
-
-                                                    console.log(targetElement)
-                                                    console.log('main end')
                                                 }}
                                                 className="cursor-grab" key={e._id}>
                                                 {e.task_name}
@@ -342,6 +351,33 @@ export default function App() {
                                         setthirdTable([...thirdTable, item!])
                                         console.log(dragId)
                                     }
+                                }} onTouchStart={() => {
+                                    setMobileDragID((prev) => {
+                                        if (prev?.table != 'third') {
+                                            if (prev?.table == 'second') {
+                                                setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'fourth') {
+                                                setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'first') {
+                                                setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                            }
+                                            if (prev?.table == 'main') {
+                                                setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                            }
+                                            const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                            setthirdTable([...thirdTable, item!])
+                                            // console.log(prev)
+                                            // console.log(item)
+                                            return null
+                                            // console.log(mobileDragId)
+                                        }
+                                        return prev
+                                    })
+                                    // console.log('no here', mobileDragId)
+
+                                    // setMobileDragID(null)
                                 }} onDragOver={(j) => {
                                     j.preventDefault()
                                 }} id="third" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
@@ -353,34 +389,9 @@ export default function App() {
                                             j.target.style.cursor = 'grab'
                                             }}
                                             onTouchStart={() => {
-                                                setDragId({ id: e._id })
-                                                console.log('setting', e._id)
-                                            }}
+                                                console.log('here')
+                                                setMobileDragID({ id: e._id, table: 'third' })
 
-                                            onTouchEnd={(e) => {
-                                                let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                                                const id = targetElement!.id
-                                                console.log('id', id)
-                                                if (id) {
-                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                    if (id == 'second') {
-                                                        setSecondTable([...SecondTable, item!])
-                                                    }
-                                                    if (id == 'main') {
-                                                        setmainTable([...mainTable, item!])
-                                                    }
-                                                    if (id == 'first') {
-                                                        setFirstTable([...firstTable, item!])
-                                                    }
-                                                    if (id == 'fourth') {
-                                                        setfourthTable([...fourthTable, item])
-                                                    }
-                                                    // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                    setthirdTable(() => thirdTable.filter((e) => e._id != dragId?.id))
-                                                }
-
-                                                console.log(targetElement)
-                                                console.log('main end')
                                             }}
                                             className="cursor-grab" key={e._id}>
                                             {e.task_name}
@@ -421,7 +432,35 @@ export default function App() {
                                         }} onTouchMove={(e) => {
                                             // console.log(e)
                                         console.log('end')
-                                    }} id="fourth" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
+                                        }}
+                                        onTouchStart={() => {
+                                            setMobileDragID((prev) => {
+                                                if (prev?.table != 'fourth') {
+                                                    if (prev?.table == 'second') {
+                                                        setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'third') {
+                                                        setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'first') {
+                                                        setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    if (prev?.table == 'main') {
+                                                        setmainTable(mainTable.filter((e) => e._id != prev.id))
+                                                    }
+                                                    const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                                    setfourthTable([...fourthTable, item!])
+                                                    // console.log(prev)
+                                                    // console.log(item)
+                                                    return null
+                                                    // console.log(mobileDragId)
+                                                }
+                                                return prev
+                                            })
+                                            // console.log('no here', mobileDragId)
+
+                                            // setMobileDragID(null)
+                                        }}    id="fourth" className="flex flex-col gap-2 min-h-[7rem] h-[7rem] overflow-auto">
                                         {
                                             fourthTable.map((e) => <div draggable onDrag={(j: any) => {
                                                 setDragId({ id: e._id, table: 'fourth' })
@@ -430,35 +469,9 @@ export default function App() {
                                                 j.target.style.cursor = 'grab'
                                                 }}
                                                 onTouchStart={() => {
-                                                    setDragId({ id: e._id })
-                                                    console.log('setting', e._id)
-                                                }}
+                                                    console.log('here')
+                                                    setMobileDragID({ id: e._id, table: 'fourth' })
 
-                                                onTouchEnd={(e) => {
-                                                    let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                                                    const id = targetElement!.id
-                                                    console.log('id', id)
-                                                    if (id) {
-                                                        const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                        if (id == 'second') {
-                                                            setSecondTable([...SecondTable,item!])
-                                                        }
-                                                        if (id == 'third') {
-                                                            setthirdTable([...thirdTable,item!])
-                                                        }
-                                                        if (id == 'first') {
-                                                            setFirstTable([...firstTable,item!])
-                                                        }
-                                                        if (id == 'main') {
-                                                            setmainTable([...mainTable,item!])
-                                                            // setfourthTable([...fourthTable, item])
-                                                        }
-                                                        setfourthTable(() => fourthTable.filter((e) => e._id != dragId?.id))
-                                                        // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                    }
-
-                                                    console.log(targetElement)
-                                                    console.log('main end')
                                                 }}
                                                 className="cursor-grab" key={e._id}>
                                                 {e.task_name}
@@ -491,6 +504,33 @@ export default function App() {
                                     setmainTable([...mainTable, item!])
                                     console.log(dragId)
                                 }
+                            }} onTouchStart={() => {
+                                setMobileDragID((prev) => {
+                                    if (prev?.table != 'main') {
+                                        if (prev?.table == 'second') {
+                                            setSecondTable(SecondTable.filter((e) => e._id != prev.id))
+                                        }
+                                        if (prev?.table == 'third') {
+                                            setthirdTable(thirdTable.filter((e) => e._id != prev.id))
+                                        }
+                                        if (prev?.table == 'first') {
+                                            setFirstTable(firstTable.filter((e) => e._id != prev.id))
+                                        }
+                                        if (prev?.table == 'fourth') {
+                                            setfourthTable(fourthTable.filter((e) => e._id != prev.id))
+                                        }
+                                        const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
+                                        console.log(prev)
+                                        console.log(item)
+                                        return null
+                                        // setmainTable([...mainTable, item!])
+                                        // console.log(mobileDragId)
+                                    }
+                                    return prev
+                                })
+                                // console.log('no here', mobileDragId)
+                                
+                                // setMobileDragID(null)
                             }}  onDragOver={(j) => {
                                 j.preventDefault()
                                 }} id="main" className="flex flex-col gap-2 min-h-[9rem] max-h-[9rem] overflow-auto">
@@ -504,36 +544,14 @@ export default function App() {
                                         j.target.style.cursor = 'grab'
                                         }}
 
+
                                         onTouchStart={() => {
-                                            setDragId({ id: e._id })
-                                            console.log('setting', e._id)
+                                            console.log('here')
+                                            setMobileDragID({ id: e._id, table: 'main' })
+                                            
                                         }}
                                         
-                                        onTouchEnd={(e) => {
-                                            let targetElement = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-                                            const id = targetElement!.id
-                                            console.log('id',id)
-                                            if (id) {
-                                                const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                if (id == 'second') {
-                                                    setSecondTable([...SecondTable,item!])
-                                                }
-                                                if (id == 'third') {
-                                                    setthirdTable([...thirdTable,item!])
-                                                }
-                                                if (id == 'first') {
-                                                    setFirstTable([...firstTable,item!])
-                                                }
-                                                if (id == 'fourth') {
-                                                    setfourthTable([...fourthTable,item])
-                                                }
-                                                // const item = getTasksQuery.data.find((e: taskData) => e._id == dragId?.id)
-                                                setmainTable(()=>mainTable.filter((e)=>e._id!=dragId?.id))
-                                            }
-
-                                            console.log(targetElement)
-                                            console.log('main end')
-                                        }}
+                                        
                                         className="cursor-grab" key={e._id}>
                                         {e.task_name}
                                     </div>)
