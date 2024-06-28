@@ -54,7 +54,7 @@ export default function Home() {
       setAudio(null)
       setImage(null)
       setPDF(null)
-      setPrompt(null)
+      // setPrompt(null)
         // console.log(data.data)
     },
   })
@@ -95,7 +95,7 @@ export default function Home() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const form = e.target as HTMLFormElement
-    const formData = new FormData()
+    const formData = new FormData(form)
     if (audio) {
       formData.set('audio',audio,'random12.wav')
     }
@@ -105,9 +105,7 @@ export default function Home() {
     if (pdf) {
       formData.set('pdf', pdf)
     }
-    if (prompt) {
-      formData.set('prompt',prompt)
-    }
+    
     console.log([...formData.entries()])
     formSubmitMutation.mutate(formData)
     const message = formData.get('prompt')
@@ -217,9 +215,7 @@ export default function Home() {
                 <button type="button"><MdOutlineAttachFile onClick={()=>{setShowFileOptions(!showFileOptions)}} className="text-xl" /></button>
               </div>
             }
-            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt" onChange={(e)=>{
-              setPrompt(e.target.value)
-            }} required className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
+            {startRecording ?<p className="text-red-900 w-[95%] animate-pulse">Recording</p>: <input placeholder="Enter Prompt"  required className="outline-none  w-[95%] bg-transparent" type="text" name="prompt" />}
             <div className="flex gap-4">
               {!startRecording &&<button type="submit"><IoSend className="text-xl" /></button>}
               {/* <button type="button">
