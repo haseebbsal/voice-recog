@@ -80,7 +80,8 @@ const users = [
 type taskData = {
     _id: string,
     task_name: string,
-    priority:string[]
+    priority1: string,
+    priority2:string
 }
 type DragID = {
     id: string,
@@ -119,6 +120,7 @@ export default function App() {
         },
         refetchOnWindowFocus:false
     })
+    console.log(getTasksQuery.data)
     // console.log(mainTable)
     // const [mainTable, setMainTable] = useState(getTasksQuery.data)
 
@@ -590,8 +592,8 @@ export default function App() {
                         const thirdTable: taskData[] = []
                         const fourthTable: taskData[] = []
                         getTasksQuery.data.forEach((e: taskData) => {
-                            if (e.priority[0] == 'Important') {
-                                if (e.priority[1] == 'Urgent') {
+                            if (e.priority2 == 'Important') {
+                                if (e.priority1 == 'Urgent') {
                                     firstTable.push(e)
                                 }
                                 else {
@@ -599,7 +601,7 @@ export default function App() {
                                 }
                             }
                             else {
-                                if (e.priority[1] == 'Urgent') {
+                                if (e.priority1 == 'Urgent') {
                                     thirdTable.push(e)
                                 }
                                 else {
