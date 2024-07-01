@@ -97,7 +97,8 @@ export default function App() {
     const [fourthTable, setfourthTable] = useState<taskData[]>([])
     const [mainTable, setmainTable] = useState<taskData[]>([])
     const [aiSuggest, setAiSuggested] = useState<boolean>(false)
-    const [mobileDragId,setMobileDragID]=useState<null|DragID>(null)
+    const [mobileDragId, setMobileDragID] = useState<null | DragID>(null)
+    const [selected,setSelected]=useState<null|string>(null)
     const deleteAllTasks = useMutation(() => axiosInstance.post('/deleteTasks'), {
         onSuccess(data) {
             // queryClient.invalidateQueries('data')
@@ -222,6 +223,7 @@ export default function App() {
                                                         }
                                                         const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
                                                         setFirstTable([...firstTable, item!])
+                                                        setSelected(null)
                                                         // console.log(prev)
                                                         // console.log(item)
                                                         return null
@@ -246,7 +248,7 @@ export default function App() {
                                                 onTouchStart={() => {
                                                     console.log('here')
                                                     setMobileDragID({ id: e._id, table: 'first' })
-
+                                                    setSelected('Choose One Of The 3 Quadrants To Place Your Task')
                                                 }}
                                                 className="cursor-grab" key={e._id}>
                                                 {e.task_name}
@@ -301,6 +303,7 @@ export default function App() {
                                                         }
                                                         const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
                                                         setSecondTable([...SecondTable, item!])
+                                                        setSelected(null)
                                                         // console.log(prev)
                                                         // console.log(item)
                                                         return null
@@ -325,7 +328,7 @@ export default function App() {
                                                 onTouchStart={() => {
                                                     console.log('here')
                                                     setMobileDragID({ id: e._id, table: 'second' })
-
+                                                    setSelected('Choose One Of The 3 Quadrants To Place Your Task')
                                                 }}
                                                 className="cursor-grab" key={e._id}>
                                                 {e.task_name}
@@ -377,6 +380,7 @@ export default function App() {
                                                 }
                                                 const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
                                                 setthirdTable([...thirdTable, item!])
+                                                setSelected(null)
                                                 // console.log(prev)
                                                 // console.log(item)
                                                 return null
@@ -402,7 +406,7 @@ export default function App() {
                                             onTouchStart={() => {
                                                 console.log('here')
                                                 setMobileDragID({ id: e._id, table: 'third' })
-
+                                                setSelected('Choose One Of The 3 Quadrants To Place Your Task')
                                             }}
                                             className="cursor-grab" key={e._id}>
                                             {e.task_name}
@@ -462,6 +466,7 @@ export default function App() {
                                                         }
                                                         const item = getTasksQuery.data.find((e: taskData) => e._id == prev?.id)
                                                         setfourthTable([...fourthTable, item!])
+                                                        setSelected(null)
                                                         // console.log(prev)
                                                         // console.log(item)
                                                         return null
@@ -485,6 +490,7 @@ export default function App() {
                                                 onTouchStart={() => {
                                                     console.log('here')
                                                     setMobileDragID({ id: e._id, table: 'fourth' })
+                                                    setSelected('Choose One Of The 3 Quadrants To Place Your Task')
 
                                                 }}
                                                 className="cursor-grab" key={e._id}>
@@ -566,6 +572,7 @@ export default function App() {
                                         onTouchStart={() => {
                                             console.log('here')
                                             setMobileDragID({ id: e._id, table: 'main' })
+                                            setSelected('Choose One Of The Quadrants To Place Your Task')
                                             
                                         }}
                                         
@@ -625,6 +632,10 @@ export default function App() {
                     </div>}
                 </div>}
             </div>
+            {selected && <div className="fixed top-8 right-8 p-4 rounded-lg w-1/2 bg-white text-gray-900">
+                <p>{selected}</p>
+            </div>
+            }
         </>
     );
 }
