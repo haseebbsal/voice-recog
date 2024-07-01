@@ -632,7 +632,7 @@ export default function App() {
                     </div>}
                 </div>}
             </div>
-            {selected && <div className="fixed top-8 right-8 p-4 rounded-lg w-1/2 bg-white text-gray-900">
+            {selected && <div className="fixed top-8 right-8 px-4 py-8 rounded-lg w-1/2 bg-white text-gray-900">
                 <p>{selected}</p>
             </div>
             }
